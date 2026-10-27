@@ -1,7 +1,7 @@
 {
-  "name": "pi-auto-name",
+  "name": "pi-auto-title",
   "private": true,
   "scripts": {
-    "test": "node --experimental-vm-modules --test smart-sessions.test.mjs"
+    "test": "node --experimental-vm-modules --test auto-title.test.mjs"
   }
 }

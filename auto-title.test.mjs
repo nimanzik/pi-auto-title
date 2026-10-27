@@ -4,7 +4,7 @@ import { stripTypeScriptTypes } from "node:module";
 import { test } from "node:test";
 import { createContext, SourceTextModule } from "node:vm";
 
-const source = stripTypeScriptTypes(await readFile(new URL("./smart-sessions.ts", import.meta.url), "utf8"));
+const source = stripTypeScriptTypes(await readFile(new URL("./auto-title.ts", import.meta.url), "utf8"));
 const flush = () => new Promise((resolve) => setImmediate(resolve));
 
 async function setup({ complete, model = { id: "current-model" } } = {}) {
