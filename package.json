@@ -1,0 +1,7 @@
+{
+  "name": "pi-auto-name",
+  "private": true,
+  "scripts": {
+    "test": "node --experimental-vm-modules --test smart-sessions.test.mjs"
+  }
+}
