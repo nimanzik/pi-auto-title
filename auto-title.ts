@@ -23,7 +23,7 @@ function readPin(path: string): ModelPin | undefined {
       typeof pin.model !== "string" || !pin.model.trim()) {
     throw new Error(`Invalid model pin in ${path}: expected provider and model strings`);
   }
-  return { provider: pin.provider, model: pin.model };
+  return { provider: pin.provider.trim(), model: pin.model.trim() };
 }
 
 export default function (pi: ExtensionAPI) {
