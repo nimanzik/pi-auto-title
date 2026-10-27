@@ -197,3 +197,34 @@ test("empty or non-text output keeps the temporary title", async () => {
   await flush();
   assert.equal(app.name, "[any] explain something");
 });
+
+test("ordinary input generates a title without a skill prefix only once", async () => {
+  const app = await setup();
+  app.handlers.input({ text: "  Help debug login failures  " }, app.ctx);
+  assert.equal(app.name, "Help debug login failures");
+  app.handlers.input({ text: "Another request" }, app.ctx);
+  assert.equal(app.calls, 1);
+  app.finish();
+  await flush();
+  assert.equal(app.name, "Short summary");
+  app.handlers.input({ text: "A later request" }, app.ctx);
+  assert.equal(app.calls, 1);
+});
+
+test("blank input leaves the session available for titling", async () => {
+  const app = await setup();
+  app.handlers.input({ text: " \n\t " }, app.ctx);
+  assert.equal(app.name, undefined);
+  assert.equal(app.calls, 0);
+  app.handlers.input({ text: "Explain something" }, app.ctx);
+  app.finish();
+  await flush();
+  assert.equal(app.name, "Short summary");
+});
+
+test("skill without a request keeps its prefix without a completion", async () => {
+  const app = await setup();
+  app.handlers.input({ text: "/skill:review" }, app.ctx);
+  assert.equal(app.name, "[review]");
+  assert.equal(app.calls, 0);
+});

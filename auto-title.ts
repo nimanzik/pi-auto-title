@@ -24,18 +24,18 @@ export default function (pi: ExtensionAPI) {
     if (named || pi.getSessionName()) return;
 
     const match = event.text.match(skillPattern);
-    if (!match) return;
+    const prefix = match ? `[${match[1]}] ` : "";
+    const userPrompt = (match ? match[2] : event.text).trim();
 
-    const skillName = match[1];
-    const userPrompt = match[2].trim();
+    if (!userPrompt && !match) return;
     named = true;
 
     if (!userPrompt) {
-      pi.setSessionName(`[${skillName}]`);
+      pi.setSessionName(prefix.trim());
       return;
     }
 
-    const temporaryName = `[${skillName}] ${userPrompt.slice(0, 60)}`;
+    const temporaryName = `${prefix}${userPrompt.slice(0, 60)}`;
     pi.setSessionName(temporaryName);
 
     const sessionId = ctx.sessionManager.getSessionId();
@@ -68,7 +68,7 @@ export default function (pi: ExtensionAPI) {
 
         if (summary && !signal.aborted && pending === task &&
             ctx.sessionManager.getSessionId() === sessionId && pi.getSessionName() === temporaryName) {
-          pi.setSessionName(`[${skillName}] ${summary}`.slice(0, 80).trim());
+          pi.setSessionName(`${prefix}${summary}`.slice(0, 80).trim());
         }
       } catch {
         // Keep the temporary or manually edited name on failure.
